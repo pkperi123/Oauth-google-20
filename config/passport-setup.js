@@ -1,8 +1,8 @@
-require('dotenv').config()
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/usermodel');
-
+require('dotenv').config()
 passport.serializeUser((user,done)=>{
     done(null,user.id);
 });
@@ -19,6 +19,7 @@ passport.use(new GoogleStrategy({
     callbackURL: 'http://localhost:3000/auth/google/callback',
 },(accessToken,refreshToken,profile,done)=>{
     console.log('passport callback fired');
+    console.log(accessToken);
     User.findOne({googleId:profile.id}).then((currentUser)=>{
         if(currentUser){
             //if user in database
